@@ -1,24 +1,22 @@
-import express,{ Application, Request, Response, NextFunction } from "express";
-const app: Application = express();
-import cors from "cors";
-import globalErrorHabdeler from "./app/middlewares/globalErrorHandeler";
-import notFound from "./app/middlewares/notFound";
-import router from "./app/routes";
+import express from 'express';
+import cors from 'cors';
+import notFound from './app/middlewares/notFound';
+import router from './app/routes';
+import globalErrorHabdeler from './app/middlewares/globalErrorHandeler';
 
+const app = express();
+
+// Middleware for parsing JSON bodies
 app.use(express.json());
+
+// Middleware for handling CORS
 app.use(cors());
 
-//application routes
-app.use('/api/v1', router)
+// Application routes
+app.use('/api', router);
 
-const getAController = (req: Request, res: Response) => {
-  res.send("Hello World!");
-};
-
-app.get("/api", getAController);
-
+// Error handling middleware
 app.use(globalErrorHabdeler);
-
-app.use(notFound)
+app.use(notFound);
 
 export default app;
