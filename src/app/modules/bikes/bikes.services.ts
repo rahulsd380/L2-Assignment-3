@@ -28,8 +28,14 @@ const updateBike = async (id : string, payload : Partial<TBike>) => {
   return result;
 };
 
+const deleteBike = async (id: string) => {
+  const result = await Bike.findByIdAndDelete(id);
+  return result;
+};
+
 export const BikeServices = {
   createBike,
   getAllBikes,
-  updateBike
+  updateBike,
+  deleteBike,
 };
