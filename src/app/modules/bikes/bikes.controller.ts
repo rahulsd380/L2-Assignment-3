@@ -5,7 +5,7 @@ import catchAsync from '../../utils/catchAsync';
 import { BikeServices } from './bikes.services';
 
 const createBike = catchAsync(async (req, res) => {
-  console.log(req.body);
+  
   const result = await BikeServices.createBike(req.body);
 
   sendResponse(res, {
@@ -17,6 +17,7 @@ const createBike = catchAsync(async (req, res) => {
 });
 
 const getAllBikes = catchAsync(async (req, res) => {
+  console.log(req.user);
   const result = await BikeServices.getAllBikes();
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -26,7 +27,20 @@ const getAllBikes = catchAsync(async (req, res) => {
   });
 })
 
+const updateBike= catchAsync(async (req, res) => {
+  const {id} = req.params;
+  const result = await BikeServices.updateBike(id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Bike updated successfully",
+    data: result,
+  });
+});
+
 export const BikeControllers = {
   createBike,
   getAllBikes,
+  updateBike
 };

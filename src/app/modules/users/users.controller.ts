@@ -1,21 +1,10 @@
+// users.controller.ts
 import { UserServices } from './users.services';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 
-const createUser = catchAsync(async (req, res) => {
-  const result = await UserServices.createUser(req.body);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'User registered successfully',
-    data: result,
-  });
-});
-
-
-const getAllUSer = catchAsync(async (req, res) => {
+const getAllUser = catchAsync(async (req, res) => {
   const result = await UserServices.getAllUser();
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -23,9 +12,34 @@ const getAllUSer = catchAsync(async (req, res) => {
     message: 'User retrieved successfully',
     data: result,
   });
-})
+});
+
+const getMe = catchAsync(async (req, res) => {
+  console.log(req.user);
+  const userId = req.user.userId;
+  const result = await UserServices.getUserById(userId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User profile retrieved successfully',
+    data: result,
+  });
+});
+
+const updateProfile = catchAsync(async (req, res) => {
+  const {id} = req.params;
+  const result = await UserServices.updateProfile(id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Profile updated successfully",
+    data: result,
+  });
+});
 
 export const UserControllers = {
-  createUser,
-  getAllUSer,
+  getAllUser,
+  getMe,
+  updateProfile,
 };

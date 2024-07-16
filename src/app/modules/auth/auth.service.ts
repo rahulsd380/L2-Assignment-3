@@ -1,9 +1,15 @@
 import httpStatus from "http-status";
-import { TLoginAuth } from "./auth.interface";
+import { TLoginAuth, TUser } from "./auth.interface";
 import { User } from "../users/users.model";
 import AppError from "../../errors/AppError";
 import jwt from "jsonwebtoken";
 import config from "../../config";
+
+const createUser = async (payload: TUser) => {
+    const result = await User.create(payload);
+    return result;
+  };
+
 
 const loginUser = async (payload: TLoginAuth) => {
 
@@ -29,7 +35,7 @@ const loginUser = async (payload: TLoginAuth) => {
     // Create token and send to client/user
 
     const jwtPayload = {
-        userEmail: user,
+        userEmail: user.email,
         role: user.role
     }
     const accessToken = jwt.sign(
@@ -46,5 +52,6 @@ const loginUser = async (payload: TLoginAuth) => {
 }
 
 export const AuthServices = {
+    createUser,
     loginUser,
 }
