@@ -35,9 +35,11 @@ const loginUser = async (payload: TLoginAuth) => {
     // Create token and send to client/user
 
     const jwtPayload = {
+        userId : user._id.toString(),
         userEmail: user.email,
         role: user.role
     }
+    console.log(jwtPayload);
     const accessToken = jwt.sign(
         jwtPayload, config.jwt_access_secret as string, { expiresIn: '20d' });
 

@@ -5,6 +5,7 @@ import { TUser, UserModel } from "./auth.interface";
 
 const userSchema: Schema = new Schema<TUser, UserModel>(
   {
+    _id : {type: String},
     name: {
       type: String,
       required: [true, "Name is required"],

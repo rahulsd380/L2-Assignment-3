@@ -16,7 +16,8 @@ const bikeValidation = z.object({
       required_error: "Price per hour is required",
       invalid_type_error: "Price per hour must be a number",
     }).positive({ message: "Price per hour must be a positive number" }),
-
+    isAvailable : z.boolean({required_error: "Bike availablity status is required",
+      invalid_type_error: "Bike availablity status should be true or false"}),
     cc: z.number({
       required_error: "CC is required",
       invalid_type_error: "CC must be a number",

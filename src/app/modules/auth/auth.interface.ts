@@ -7,6 +7,7 @@ import { Model } from "mongoose";
 import { UserRole } from "./auth.constannts";
 
 export interface TUser {
+  _id : string;
     name: string;
     email: string;
     password: string;
