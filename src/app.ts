@@ -3,6 +3,7 @@ import cors from 'cors';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
 import globalErrorHabdeler from './app/middlewares/globalErrorHandeler';
+import notFoundHandler from './app/middlewares/notFoundHandeler';
 
 const app = express();
 
@@ -14,6 +15,9 @@ app.use(cors());
 
 // Application routes
 app.use('/api', router);
+
+// For catching the incorrect routes
+app.use(notFoundHandler);
 
 // Error handling middleware
 app.use(globalErrorHabdeler);
