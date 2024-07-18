@@ -13,6 +13,10 @@ app.use(express.json());
 // Middleware for handling CORS
 app.use(cors());
 
+app.get('/', (req, res) => {
+    res.send("Welcome to bike rental");
+  });
+
 // Application routes
 app.use('/api', router);
 
