@@ -3,7 +3,7 @@ import validateRequest from '../../middlewares/validateRequest';
 import { BikeControllers } from '../bikes/bikes.controller';
 import bikeValidation from './bikes.validation';
 import auth from '../../middlewares/auth';
-import { UserRole } from '../users/user.constant';
+import { UserRole } from '../auth/auth.constannts';
 
 const router = express.Router();
 

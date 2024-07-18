@@ -4,11 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const notFound_1 = __importDefault(require("./app/middlewares/notFound"));
+const routes_1 = __importDefault(require("./app/routes"));
+const globalErrorHandeler_1 = __importDefault(require("./app/middlewares/globalErrorHandeler"));
+const notFoundHandeler_1 = __importDefault(require("./app/middlewares/notFoundHandeler"));
 const app = (0, express_1.default)();
-const port = 3000;
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
+// Middleware for parsing JSON bodies
+app.use(express_1.default.json());
+// Middleware for handling CORS
+app.use((0, cors_1.default)());
+// Application routes
+app.use('/api', routes_1.default);
+// For catching the incorrect routes
+app.use(notFoundHandeler_1.default);
+// Error handling middleware
+app.use(globalErrorHandeler_1.default);
+app.use(notFound_1.default);
+exports.default = app;

@@ -6,8 +6,10 @@ const getAllUser = async () => {
   return result;
 };
 
-const getUserById = async (userId: string) => {
+const getMe = async (userId: string) => {
+  console.log(userId);
   const result = await User.findById(userId);
+  console.log(result);
   return result;
 };
 
@@ -21,6 +23,6 @@ const updateProfile = async (id: string, payload: Partial<TUser>) => {
 
 export const UserServices = {
   getAllUser,
-  getUserById,
+  getMe,
   updateProfile
 };

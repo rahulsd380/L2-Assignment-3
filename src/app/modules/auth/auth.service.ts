@@ -1,9 +1,10 @@
 import httpStatus from "http-status";
-import { TLoginAuth, TUser } from "./auth.interface";
+import { TLoginAuth } from "./auth.interface";
 import { User } from "../users/users.model";
 import AppError from "../../errors/AppError";
 import jwt from "jsonwebtoken";
 import config from "../../config";
+import { TUser } from "../users/users.interface";
 
 // Create user route
 const createUser = async (payload: TUser) => {

@@ -1,15 +1,17 @@
 import { Schema, model } from "mongoose";
-import { TUser, UserModel } from "./users.interface";
+import { TUser } from "./users.interface";
 import bcrypt from "bcrypt";
 import config from "../../config";
+import { UserModel } from "../auth/auth.interface";
 
-const userSchema: Schema = new Schema<TUser, UserModel>(
+const userSchema: Schema = new Schema<TUser>(
   {
+    
     name: {
       type: String,
       required: [true, "Name is required"],
     },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true},
     phone: { type: Number },
     address: { type: String },
