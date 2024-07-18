@@ -11,7 +11,7 @@ const getUserById = async (userId: string) => {
   return result;
 };
 
-const updateProfile = async (id : string, payload : Partial<TUser>) => {
+const updateProfile = async (id: string, payload: Partial<TUser>) => {
   const result = await User.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,

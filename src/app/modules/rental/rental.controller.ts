@@ -35,6 +35,14 @@ const returnBike = catchAsync(async (req: Request, res: Response) => {
 const getAllRentalsForUser = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user.userId;
   const rentals = await RentalServices.getAllRentalsForUser(userId);
+  if(rentals.length === 0){
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: false,
+      message: "You don't have any rentals",
+      data: rentals,
+    });
+  }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

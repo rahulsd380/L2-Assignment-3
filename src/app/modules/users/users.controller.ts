@@ -27,8 +27,9 @@ const getMe = catchAsync(async (req, res) => {
 });
 
 const updateProfile = catchAsync(async (req, res) => {
-  const {id} = req.params;
-  const result = await UserServices.updateProfile(id, req.body);
+  console.log(req.user);
+  const userId = req.user.userId;
+  const result = await UserServices.updateProfile(userId, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
