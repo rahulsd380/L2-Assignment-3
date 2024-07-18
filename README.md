@@ -55,3 +55,10 @@ npm install
 
 # Start the server
 npm start
+
+# Place your database url and add username and password and add all other necessary details
+DB_URL=your db_url
+PORT=5000
+BCRYPT_SALT_ROUND=12
+NODE_ENV=development/deployment
+JWT_ACCESS_SECRET=your jwt secret key
