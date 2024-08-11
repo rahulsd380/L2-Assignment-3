@@ -45,9 +45,9 @@ const returnBike = async (rentalId: string, userId: string): Promise<TRental> =>
     throw new AppError(httpStatus.NOT_FOUND, 'Rental not found');
   }
 
-  if (rental.userId.toString() !== userId) {
-    throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized to return this bike');
-  }
+  // if (rental.userId.toString() !== userId) {
+  //   throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized to return');
+  // }
 
   const bike = await Bike.findById(rental.bikeId);
 

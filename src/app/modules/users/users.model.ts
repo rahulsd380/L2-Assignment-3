@@ -12,7 +12,7 @@ const userSchema: Schema = new Schema<TUser>(
       required: [true, "Name is required"],
     },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true, select: 0},
+    password: { type: String, required: true},
     phone: { type: Number },
     address: { type: String },
     role: {
