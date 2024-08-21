@@ -48,9 +48,9 @@ const returnBike = (rentalId, userId) => __awaiter(void 0, void 0, void 0, funct
     if (!rental) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Rental not found');
     }
-    if (rental.userId.toString() !== userId) {
-        throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'You are not authorized to return this bike');
-    }
+    // if (rental.userId.toString() !== userId) {
+    //   throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized to return');
+    // }
     const bike = yield bikes_model_1.Bike.findById(rental.bikeId);
     if (!bike) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Bike not found');

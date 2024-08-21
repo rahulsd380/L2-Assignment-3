@@ -17,10 +17,9 @@ const userValidation = z.object({
       invalid_type_error: "Password must be a string"
     }).min(6, { message: "Password must be at least 6 characters long" }),
     
-    phone: z.number({
-      required_error: "Phone is required",
-      invalid_type_error: "Phone must be a number"
-    }).int({ message: "Phone must be an integer" }),
+    phone: z.string({
+      required_error: "Phone is required"
+    }),
     
     address: z.string({
       required_error: "Address is required",
@@ -30,11 +29,6 @@ const userValidation = z.object({
     role: z.enum(["admin", "user"], {
       required_error: "Role is required",
       invalid_type_error: "Role must be either 'admin' or 'user'"
-    }),
-    
-    isDeleted: z.boolean({
-      required_error: "isDeleted is required",
-      invalid_type_error: "isDeleted must be a boolean"
     })
   })
 });

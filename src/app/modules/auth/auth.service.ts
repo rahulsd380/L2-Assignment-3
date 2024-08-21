@@ -8,6 +8,7 @@ import { TUser } from "../users/users.interface";
 
 // Create user route
 const createUser = async (payload: TUser) => {
+  console.log(payload);
   const isUserExists = await User.findOne({ email: payload.email });
   if (isUserExists) {
     throw new AppError(httpStatus.CONFLICT, "User already exists.");

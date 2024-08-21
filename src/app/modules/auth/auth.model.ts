@@ -10,7 +10,7 @@ const userSchema = new Schema<TUser>({
   },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  phone: { type: Number },
+  phone: { type: String },
   address: { type: String },
   role: {
     type: String,
@@ -18,7 +18,6 @@ const userSchema = new Schema<TUser>({
     enum: ["admin", "user"],
     default: "user",
   },
-  isDeleted: { type: Boolean, default: false },
 }, {
   timestamps: true,
 });

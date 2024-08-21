@@ -20,6 +20,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../config"));
 // Create user route
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(payload);
     const isUserExists = yield users_model_1.User.findOne({ email: payload.email });
     if (isUserExists) {
         throw new AppError_1.default(http_status_1.default.CONFLICT, "User already exists.");

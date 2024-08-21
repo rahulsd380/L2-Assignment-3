@@ -23,7 +23,7 @@ const userSchema = new mongoose_1.Schema({
     },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    phone: { type: Number },
+    phone: { type: String },
     address: { type: String },
     role: {
         type: String,
@@ -31,7 +31,6 @@ const userSchema = new mongoose_1.Schema({
         enum: ["admin", "user"],
         default: "user",
     },
-    isDeleted: { type: Boolean, default: false },
 }, {
     timestamps: true,
 });
