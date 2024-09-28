@@ -38,7 +38,7 @@ const createRental = async (userId: string, bikeId: string, startTime: Date): Pr
   return rental;
 };
 
-const returnBike = async (rentalId: string, userId: string): Promise<TRental> => {
+const returnBike = async (rentalId: string): Promise<TRental> => {
   const rental = await Rental.findById(rentalId);
 
   if (!rental) {
@@ -70,6 +70,11 @@ const returnBike = async (rentalId: string, userId: string): Promise<TRental> =>
   return rental;
 };
 
+const getAllRentals = async () => {
+  const rentals = await Rental.find();
+  return rentals;
+};
+
 const getAllRentalsForUser = async (userId: string): Promise<TRental[]> => {
   const rentals = await Rental.find({ userId });
   return rentals;
@@ -79,4 +84,5 @@ export const RentalServices = {
   createRental,
   returnBike,
   getAllRentalsForUser,
+  getAllRentals
 };

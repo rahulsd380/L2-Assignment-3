@@ -8,6 +8,7 @@ const rentalSchema = new Schema<TRental>({
     returnTime: { type: Date },
     totalCost: { type: Number, default: 0 },
     isReturned: { type: Boolean, default: false },
+    isPaid : {type: Boolean, default: false},
   });
   
   export const Rental = mongoose.model<TRental>('Rental', rentalSchema);

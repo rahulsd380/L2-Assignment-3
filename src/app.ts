@@ -1,18 +1,22 @@
 import express from 'express';
 import cors from 'cors';
-import notFound from './app/middlewares/notFound';
 import router from './app/routes';
-import globalErrorHabdeler from './app/middlewares/globalErrorHandeler';
+import cookieParser from 'cookie-parser';
 import notFoundHandler from './app/middlewares/notFoundHandeler';
+import globalErrorHabdeler from './app/middlewares/globalErrorHandeler';
 
 const app = express();
+
+// Enable cookie parsing
+app.use(cookieParser());
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
 
-// Middleware for handling CORS
-app.use(cors());
+// Middleware for handling CORS with credentials
+app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
 
+// Root route
 app.get('/', (req, res) => {
   res.send("Welcome to bike rental");
 });
@@ -20,11 +24,10 @@ app.get('/', (req, res) => {
 // Application routes
 app.use('/api', router);
 
-// For catching the incorrect routes
+// Catch-all route for handling 404 errors
 app.use(notFoundHandler);
 
-// Error handling middleware
+// Global error handling middleware
 app.use(globalErrorHabdeler);
-app.use(notFound);
 
 export default app;

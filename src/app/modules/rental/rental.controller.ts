@@ -8,7 +8,7 @@ const createRental = catchAsync(async (req: Request, res: Response) => {
   const { bikeId, startTime } = req.body;
   const userId = req.user.userId;
 
-  const rental = await RentalServices.createRental(userId, bikeId, new Date(startTime));
+  const rental = await RentalServices.createRental(userId, bikeId, startTime);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -20,15 +20,29 @@ const createRental = catchAsync(async (req: Request, res: Response) => {
 
 const returnBike = catchAsync(async (req: Request, res: Response) => {
   const { id: rentalId } = req.params;
-  const userId = req.user.userId;
 
-  const updatedRental = await RentalServices.returnBike(rentalId, userId);
+  console.log(rentalId);
+
+  // const userId = req?.user?.userId;
+
+  const updatedRental = await RentalServices.returnBike(rentalId);    //userId
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Bike returned successfully',
     data: updatedRental,
+  });
+});
+
+const getAllRentals = catchAsync(async (req: Request, res: Response) => {
+  const result = await RentalServices.getAllRentals();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Bike rental data fetched successfully',
+    data: result,
   });
 });
 
@@ -56,4 +70,5 @@ export const RentalControllers = {
   createRental,
   returnBike,
   getAllRentalsForUser,
+  getAllRentals,
 };

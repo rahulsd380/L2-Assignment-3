@@ -11,5 +11,6 @@ router.post('/', auth(UserRole.admin), validateRequest(bikeValidation), BikeCont
 router.get('/', BikeControllers.getAllBikes);
 router.put('/:id', auth(UserRole.admin), BikeControllers.updateBike);
 router.delete('/:id', auth(UserRole.admin), BikeControllers.deleteBike);
+router.get('/:bikeId', BikeControllers.getSingleBikeById);
 
 export const bikeRoutes = router;

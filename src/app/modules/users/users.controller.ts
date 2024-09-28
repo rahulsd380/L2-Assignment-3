@@ -15,7 +15,6 @@ const getAllUser = catchAsync(async (req, res) => {
 });
 
 const getMe = catchAsync(async (req, res) => {
-  console.log(req.user);
   const userId = req.user.userId;
   const result = await UserServices.getMe(userId);
   sendResponse(res, {
@@ -27,9 +26,10 @@ const getMe = catchAsync(async (req, res) => {
 });
 
 const updateProfile = catchAsync(async (req, res) => {
-  console.log(req.user);
   const userId = req.user.userId;
   const result = await UserServices.updateProfile(userId, req.body);
+
+  console.log("Update request received:", userId, req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -39,8 +39,52 @@ const updateProfile = catchAsync(async (req, res) => {
   });
 });
 
+const changeUserRoleToAdmin = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const result = await UserServices.changeUserRoleToAdmin(userId);
+
+  console.log(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User role updated to admin successfully',
+    data: result,
+  });
+});
+
+const changeUserRoleToUser = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  const result = await UserServices.changeUserRoleToUser(userId);
+
+  console.log(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User role updated to admin successfully',
+    data: result,
+  });
+});
+
+const deleteUser = catchAsync(async (req, res) => {
+  const { userId } = req.params;
+  console.log(userId);
+  const result = await UserServices.deleteUser(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User deleted succesfully',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   getAllUser,
   getMe,
   updateProfile,
+  deleteUser,
+  changeUserRoleToAdmin,
+  changeUserRoleToUser,
 };

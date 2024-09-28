@@ -7,9 +7,7 @@ const getAllUser = async () => {
 };
 
 const getMe = async (userId: string) => {
-  console.log(userId);
   const result = await User.findById(userId);
-  console.log(result);
   return result;
 };
 
@@ -21,8 +19,44 @@ const updateProfile = async (id: string, payload: Partial<TUser>) => {
   return result;
 };
 
+const changeUserRoleToAdmin = async (userId: string) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  user.role = 'admin';
+  await user.save();
+  return user;
+};
+
+const changeUserRoleToUser = async (userId: string) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  user.role = 'user';
+  await user.save();
+  return user;
+};
+
+const deleteUser = async (id: string) => {
+  const result = await User.findByIdAndDelete(id);
+
+  // id,
+  // { isDeleted: true },
+  // {
+  //   new: true,
+  // }
+  return result;
+};
+
 export const UserServices = {
   getAllUser,
   getMe,
-  updateProfile
+  updateProfile,
+  deleteUser,
+  changeUserRoleToAdmin,
+  changeUserRoleToUser,
 };
