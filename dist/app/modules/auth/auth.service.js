@@ -18,14 +18,24 @@ const users_model_1 = require("../users/users.model");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../config"));
+const auth_utils_1 = require("./auth.utils");
 // Create user route
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(payload);
-    const isUserExists = yield users_model_1.User.findOne({ email: payload.email });
+    const { name, email, address, phone, password } = payload;
+    const isUserExists = yield users_model_1.User.findOne({ email });
     if (isUserExists) {
         throw new AppError_1.default(http_status_1.default.CONFLICT, "User already exists.");
     }
-    const result = yield users_model_1.User.create(payload);
+    const payloadData = {
+        name: name || "",
+        email: email || "",
+        address: address || "",
+        phone: phone || "",
+        password: password || "",
+        role: "user",
+    };
+    console.log(payloadData);
+    const result = yield users_model_1.User.create(payloadData);
     return result;
 });
 // Login
@@ -48,19 +58,54 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     // Create token and send to client/user
     const jwtPayload = {
         userId: user._id.toString(),
-        userEmail: user.email,
+        email: user.email,
         role: user.role,
     };
     console.log(jwtPayload);
-    const accessToken = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_access_secret, {
-        expiresIn: "20d",
-    });
+    const accessToken = (0, auth_utils_1.createToekn)(jwtPayload, config_1.default.jwt_access_secret, config_1.default.jwt_access_expires_in);
+    const refreshToekn = (0, auth_utils_1.createToekn)(jwtPayload, config_1.default.jwt_refresh_secret, config_1.default.jwt_refresh_expires_in);
     // Access the user into his account.
     return {
         accessToken,
+        refreshToekn,
+        user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            address: user.address,
+            role: user.role,
+        },
+    };
+});
+const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    // Check if there is any token sent from the client or not.
+    if (!token) {
+        throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "You are not authorized to proceed!");
+    }
+    // Check if the token is valid or not.
+    const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_refresh_secret);
+    const { email } = decoded;
+    const user = yield users_model_1.User.isUserExists(email);
+    console.log(user);
+    // Checking if the user exists or not
+    if (!user) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "User not found!");
+    }
+    // Checking if the user is deleted or not
+    // Have to check if the user is suspended or not
+    const jwtpayload = {
+        userId: user._id,
+        email: user.email,
+        role: user.role,
+    };
+    const accessToken = (0, auth_utils_1.createToekn)(jwtpayload, config_1.default.jwt_access_secret, config_1.default.jwt_access_expires_in);
+    return {
+        accessToken
     };
 });
 exports.AuthServices = {
     createUser,
     loginUser,
+    refreshToken,
 };

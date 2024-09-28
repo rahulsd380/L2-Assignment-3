@@ -43,21 +43,23 @@ const createRental = (userId, bikeId, startTime) => __awaiter(void 0, void 0, vo
     });
     return rental;
 });
-const returnBike = (rentalId, userId) => __awaiter(void 0, void 0, void 0, function* () {
+const returnBike = (rentalId) => __awaiter(void 0, void 0, void 0, function* () {
     const rental = yield rental_model_1.Rental.findById(rentalId);
     if (!rental) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Rental not found');
     }
-    // if (rental.userId.toString() !== userId) {
-    //   throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized to return');
-    // }
     const bike = yield bikes_model_1.Bike.findById(rental.bikeId);
     if (!bike) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Bike not found');
     }
     const returnTime = new Date();
     const rentalDurationInHours = (returnTime.getTime() - rental.startTime.getTime()) / (1000 * 60 * 60);
-    const totalCost = rentalDurationInHours * bike.pricePerHour;
+    // Ensure bike.pricePerHour is a number, you can either cast it or handle a fallback
+    const pricePerHour = Number(bike.pricePerHour);
+    if (isNaN(pricePerHour)) {
+        throw new AppError_1.default(http_status_1.default.BAD_REQUEST, 'Invalid bike price per hour');
+    }
+    const totalCost = rentalDurationInHours * pricePerHour;
     rental.returnTime = returnTime;
     rental.totalCost = totalCost;
     rental.isReturned = true;
@@ -65,6 +67,10 @@ const returnBike = (rentalId, userId) => __awaiter(void 0, void 0, void 0, funct
     bike.isAvailable = true;
     yield bike.save();
     return rental;
+});
+const getAllRentals = () => __awaiter(void 0, void 0, void 0, function* () {
+    const rentals = yield rental_model_1.Rental.find();
+    return rentals;
 });
 const getAllRentalsForUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const rentals = yield rental_model_1.Rental.find({ userId });
@@ -74,4 +80,5 @@ exports.RentalServices = {
     createRental,
     returnBike,
     getAllRentalsForUser,
+    getAllRentals
 };

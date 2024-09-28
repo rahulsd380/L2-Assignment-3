@@ -27,9 +27,7 @@ const createBike = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const getAllBikes = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.user);
     const result = yield bikes_services_1.BikeServices.getAllBikes();
-    console.log(result);
     if (result.length === 0 || result.length === undefined) {
         (0, sendResponse_1.default)(res, {
             statusCode: http_status_1.default.OK,
@@ -42,6 +40,17 @@ const getAllBikes = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'Bikes retrieved successfully',
+        data: result,
+    });
+}));
+// Get single bike route
+const getSingleBikeById = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { bikeId } = req.params;
+    const result = yield bikes_services_1.BikeServices.getSingleBikeById(bikeId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Bike fetched successfully.',
         data: result,
     });
 }));
@@ -70,4 +79,5 @@ exports.BikeControllers = {
     getAllBikes,
     updateBike,
     deleteBike,
+    getSingleBikeById,
 };

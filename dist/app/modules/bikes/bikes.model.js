@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Bike = void 0;
 const mongoose_1 = require("mongoose");
 const bikeSchema = new mongoose_1.Schema({
+    image: {
+        type: String
+    },
     name: {
         type: String,
         required: [true, "Name is required"],
@@ -12,10 +15,10 @@ const bikeSchema = new mongoose_1.Schema({
         required: [true, "Description is required"],
     },
     pricePerHour: {
-        type: Number,
+        type: String,
         required: [true, "Price per hour is required"],
     },
-    isAvailable: { type: Boolean, required: true, default: true },
+    isAvailable: { type: Boolean },
     cc: {
         type: Number,
         required: [true, "CC is required"],

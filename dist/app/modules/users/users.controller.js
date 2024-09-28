@@ -28,7 +28,6 @@ const getAllUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const getMe = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.user);
     const userId = req.user.userId;
     const result = yield users_services_1.UserServices.getMe(userId);
     (0, sendResponse_1.default)(res, {
@@ -39,9 +38,9 @@ const getMe = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, 
     });
 }));
 const updateProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.user);
     const userId = req.user.userId;
     const result = yield users_services_1.UserServices.updateProfile(userId, req.body);
+    console.log("Update request received:", userId, req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -49,8 +48,44 @@ const updateProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result,
     });
 }));
+const changeUserRoleToAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    const result = yield users_services_1.UserServices.changeUserRoleToAdmin(userId);
+    console.log(userId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'User role updated to admin successfully',
+        data: result,
+    });
+}));
+const changeUserRoleToUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    const result = yield users_services_1.UserServices.changeUserRoleToUser(userId);
+    console.log(userId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'User role updated to admin successfully',
+        data: result,
+    });
+}));
+const deleteUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = req.params;
+    console.log(userId);
+    const result = yield users_services_1.UserServices.deleteUser(userId);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'User deleted succesfully',
+        data: result,
+    });
+}));
 exports.UserControllers = {
     getAllUser,
     getMe,
     updateProfile,
+    deleteUser,
+    changeUserRoleToAdmin,
+    changeUserRoleToUser,
 };

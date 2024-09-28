@@ -45,10 +45,6 @@ const returnBike = async (rentalId: string): Promise<TRental> => {
     throw new AppError(httpStatus.NOT_FOUND, 'Rental not found');
   }
 
-  // if (rental.userId.toString() !== userId) {
-  //   throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized to return');
-  // }
-
   const bike = await Bike.findById(rental.bikeId);
 
   if (!bike) {
@@ -57,7 +53,15 @@ const returnBike = async (rentalId: string): Promise<TRental> => {
 
   const returnTime = new Date();
   const rentalDurationInHours = (returnTime.getTime() - rental.startTime.getTime()) / (1000 * 60 * 60);
-  const totalCost = rentalDurationInHours * bike.pricePerHour;
+
+  // Ensure bike.pricePerHour is a number, you can either cast it or handle a fallback
+  const pricePerHour = Number(bike.pricePerHour);
+
+  if (isNaN(pricePerHour)) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Invalid bike price per hour');
+  }
+
+  const totalCost = rentalDurationInHours * pricePerHour;
 
   rental.returnTime = returnTime;
   rental.totalCost = totalCost;
@@ -69,6 +73,7 @@ const returnBike = async (rentalId: string): Promise<TRental> => {
 
   return rental;
 };
+
 
 const getAllRentals = async () => {
   const rentals = await Rental.find();

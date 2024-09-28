@@ -20,7 +20,7 @@ const rental_service_1 = require("./rental.service");
 const createRental = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { bikeId, startTime } = req.body;
     const userId = req.user.userId;
-    const rental = yield rental_service_1.RentalServices.createRental(userId, bikeId, new Date(startTime));
+    const rental = yield rental_service_1.RentalServices.createRental(userId, bikeId, startTime);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -30,13 +30,23 @@ const createRental = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 }));
 const returnBike = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id: rentalId } = req.params;
-    const userId = req.user.userId;
-    const updatedRental = yield rental_service_1.RentalServices.returnBike(rentalId, userId);
+    console.log(rentalId);
+    // const userId = req?.user?.userId;
+    const updatedRental = yield rental_service_1.RentalServices.returnBike(rentalId); //userId
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
         message: 'Bike returned successfully',
         data: updatedRental,
+    });
+}));
+const getAllRentals = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield rental_service_1.RentalServices.getAllRentals();
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Bike rental data fetched successfully',
+        data: result,
     });
 }));
 const getAllRentalsForUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -61,4 +71,5 @@ exports.RentalControllers = {
     createRental,
     returnBike,
     getAllRentalsForUser,
+    getAllRentals,
 };

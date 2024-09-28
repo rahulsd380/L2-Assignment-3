@@ -22,10 +22,6 @@ const userValidation = zod_1.z.object({
             required_error: "Address is required",
             invalid_type_error: "Address must be a string"
         }),
-        role: zod_1.z.enum(["admin", "user"], {
-            required_error: "Role is required",
-            invalid_type_error: "Role must be either 'admin' or 'user'"
-        })
     })
 });
 exports.default = userValidation;

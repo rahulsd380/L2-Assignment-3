@@ -16,9 +16,7 @@ const getAllUser = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getMe = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(userId);
     const result = yield users_model_1.User.findById(userId);
-    console.log(result);
     return result;
 });
 const updateProfile = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,8 +26,38 @@ const updateProfile = (id, payload) => __awaiter(void 0, void 0, void 0, functio
     });
     return result;
 });
+const changeUserRoleToAdmin = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield users_model_1.User.findById(userId);
+    if (!user) {
+        throw new Error('User not found');
+    }
+    user.role = 'admin';
+    yield user.save();
+    return user;
+});
+const changeUserRoleToUser = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield users_model_1.User.findById(userId);
+    if (!user) {
+        throw new Error('User not found');
+    }
+    user.role = 'user';
+    yield user.save();
+    return user;
+});
+const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield users_model_1.User.findByIdAndDelete(id);
+    // id,
+    // { isDeleted: true },
+    // {
+    //   new: true,
+    // }
+    return result;
+});
 exports.UserServices = {
     getAllUser,
     getMe,
-    updateProfile
+    updateProfile,
+    deleteUser,
+    changeUserRoleToAdmin,
+    changeUserRoleToUser,
 };

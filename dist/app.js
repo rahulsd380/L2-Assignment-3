@@ -5,23 +5,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const notFound_1 = __importDefault(require("./app/middlewares/notFound"));
 const routes_1 = __importDefault(require("./app/routes"));
-const globalErrorHandeler_1 = __importDefault(require("./app/middlewares/globalErrorHandeler"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const notFoundHandeler_1 = __importDefault(require("./app/middlewares/notFoundHandeler"));
+const globalErrorHandeler_1 = __importDefault(require("./app/middlewares/globalErrorHandeler"));
 const app = (0, express_1.default)();
+// Enable cookie parsing
+app.use((0, cookie_parser_1.default)());
 // Middleware for parsing JSON bodies
 app.use(express_1.default.json());
-// Middleware for handling CORS
-app.use((0, cors_1.default)());
+// Middleware for handling CORS with credentials
+app.use((0, cors_1.default)({ origin: ['http://localhost:5173'], credentials: true }));
+// Root route
 app.get('/', (req, res) => {
     res.send("Welcome to bike rental");
 });
 // Application routes
 app.use('/api', routes_1.default);
-// For catching the incorrect routes
+// Catch-all route for handling 404 errors
 app.use(notFoundHandeler_1.default);
-// Error handling middleware
+// Global error handling middleware
 app.use(globalErrorHandeler_1.default);
-app.use(notFound_1.default);
 exports.default = app;

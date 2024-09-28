@@ -12,4 +12,5 @@ const users_validation_1 = __importDefault(require("../users/users.validation"))
 const router = express_1.default.Router();
 router.post('/signup', (0, validateRequest_1.default)(users_validation_1.default), auth_controller_1.AuthControllers.createUser);
 router.post('/login', (0, validateRequest_1.default)(auth_validation_1.AuthValidations.LoginValidationSchema), auth_controller_1.AuthControllers.loginUser);
+router.post('/refresh-token', (0, validateRequest_1.default)(auth_validation_1.AuthValidations.refreshToeknValidationSchema), auth_controller_1.AuthControllers.refreshToekn);
 exports.AuthRoute = router;

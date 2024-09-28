@@ -15,4 +15,5 @@ router.post('/', (0, auth_1.default)(auth_constannts_1.UserRole.admin), (0, vali
 router.get('/', bikes_controller_1.BikeControllers.getAllBikes);
 router.put('/:id', (0, auth_1.default)(auth_constannts_1.UserRole.admin), bikes_controller_1.BikeControllers.updateBike);
 router.delete('/:id', (0, auth_1.default)(auth_constannts_1.UserRole.admin), bikes_controller_1.BikeControllers.deleteBike);
+router.get('/:bikeId', bikes_controller_1.BikeControllers.getSingleBikeById);
 exports.bikeRoutes = router;
