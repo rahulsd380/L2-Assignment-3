@@ -19,23 +19,24 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../config"));
 const auth = (...requiredRoles) => {
     return (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        const token = req.headers.authorization;
-        // Check if there is any token sent by the client or not.
-        if (!token) {
+        const authHeader = req.headers.authorization;
+        // Check if the auth header is present
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized to proceed!');
         }
-        // Check if the token is valid or not.
-        jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_secret, function (err, decoded) {
-            // err
+        // Extract the token by removing 'Bearer ' from the auth header
+        const token = authHeader.split(' ')[1];
+        // Verify the token
+        jsonwebtoken_1.default.verify(token, config_1.default.jwt_access_secret, (err, decoded) => {
             if (err) {
                 throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You have no access to this route');
             }
-            ;
             const role = decoded.role;
+            // Check if user has required role(s)
             if (requiredRoles && !requiredRoles.includes(role)) {
-                throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You have no access to this route');
+                throw new AppError_1.default(http_status_1.default.FORBIDDEN, 'You have no access to this route');
             }
-            // decoded undefined
+            // Attach the decoded token to the request
             req.user = decoded;
             next();
         });
